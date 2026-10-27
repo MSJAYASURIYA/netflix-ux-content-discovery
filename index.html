@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d0d0f">
+<title>Tonight, quickly - Netflix UX concept</title>
+<style>
+:root{color-scheme:dark;--bg:#0d0d0f;--surface:#17181d;--raised:#202126;--line:#303137;--text:#f4f4f5;--muted:#a7a8b0;--red:#e50914;--green:#63d7a6;--focus:#ffb6b9;font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);min-height:100vh}button{font:inherit;color:inherit;cursor:pointer}button:focus-visible,a:focus-visible{outline:3px solid var(--focus);outline-offset:3px}a{color:inherit}
+.topbar{position:sticky;top:0;z-index:5;background:rgba(13,13,15,.93);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);display:flex;align-items:center;gap:28px;padding:13px max(24px,calc((100vw - 1200px)/2))}
+.brand{font-size:1.25rem;font-weight:900;letter-spacing:.09em;color:var(--red)}.brand small{display:block;color:var(--muted);font-size:.55rem;letter-spacing:.08em;font-weight:650;margin-top:1px}
+nav{display:flex;gap:8px;flex:1}nav button,.quiet{border:0;background:none;color:var(--muted);padding:9px 12px;border-radius:7px;font-size:.9rem}nav button:hover,nav button[aria-current=true]{color:var(--text);background:#24252b}
+.profile{margin-left:auto;border:1px solid var(--line);background:var(--surface);padding:8px 11px;border-radius:999px;font-size:.8rem}
+main{width:min(1180px,calc(100% - 40px));margin:0 auto;padding:38px 0 90px}.eyebrow{font-size:.72rem;font-weight:750;letter-spacing:.13em;text-transform:uppercase;color:#ff777d}.intro{display:grid;grid-template-columns:1.2fr .8fr;gap:32px;align-items:end;margin:14px 0 28px}h1{font-size:clamp(2.1rem,5vw,4.1rem);line-height:1.02;letter-spacing:-.055em;margin:.35rem 0 .8rem}.intro p{max-width:650px;color:var(--muted);line-height:1.65;margin:0}.concept-note{background:linear-gradient(135deg,#251619,#16171b 65%);border:1px solid #442124;padding:18px;border-radius:12px;color:#e6c4c5;font-size:.85rem;line-height:1.55}.concept-note strong{display:block;color:#ff9da1;font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;margin-bottom:5px}
+.filters{display:flex;align-items:flex-end;flex-wrap:wrap;gap:20px;background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:16px 18px;margin-bottom:26px}.filter-group{display:grid;gap:8px}.filter-group label{color:var(--muted);font-size:.72rem;text-transform:uppercase;letter-spacing:.08em;font-weight:700}.segmented{display:flex;flex-wrap:wrap;gap:6px}.filter-button{border:1px solid #3a3b42;background:#202126;color:#d5d6db;border-radius:999px;padding:8px 12px;font-size:.8rem}.filter-button[aria-pressed=true]{border-color:#ff7077;background:#351b1e;color:#fff}.reset{margin-left:auto;border:0;background:none;color:var(--muted);padding:9px;font-size:.8rem}.reset:hover{color:var(--text)}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:18px;margin:24px 0 14px}.section-head h2{font-size:1.25rem;margin:0}.section-head p{color:var(--muted);margin:5px 0 0;font-size:.85rem}.count{color:var(--muted);font-size:.78rem}
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}.title-card{border:1px solid var(--line);border-radius:13px;background:var(--surface);overflow:hidden;transition:transform .16s ease,border-color .16s ease}.title-card:hover{transform:translateY(-3px);border-color:#57585f}.art{height:205px;padding:14px;position:relative;display:flex;align-items:end;isolation:isolate;overflow:hidden}.art:before,.mini-art:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.8),transparent 68%);z-index:-1}.art:after{content:"";position:absolute;width:210px;height:210px;border-radius:50%;right:-54px;top:-65px;background:rgba(255,255,255,.16);z-index:-2}.art h3{font-family:Georgia,serif;font-size:1.85rem;max-width:78%;line-height:1;margin:0 0 3px;text-shadow:0 2px 9px #000}.art span{font-size:.68rem;text-transform:uppercase;letter-spacing:.12em;color:#f3e5df}
+.card-content{padding:15px}.meta{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 11px}.pill{border:1px solid #42434a;border-radius:999px;padding:4px 8px;font-size:.68rem;color:#d5d6db}.why{color:#d4eadf;background:#16221d;border-left:2px solid var(--green);padding:9px 10px;margin:0 0 14px;font-size:.76rem;line-height:1.45}.availability{font-size:.72rem;color:var(--muted);line-height:1.5;min-height:32px}.actions{display:flex;gap:8px;margin-top:13px}.primary,.secondary,.save,.danger{border-radius:7px;padding:9px 12px;font-weight:750;font-size:.78rem}.primary{border:0;background:var(--red);color:white}.primary:hover{background:#f02b35}.secondary,.save{border:1px solid #505159;background:#24252b}.secondary:hover,.save:hover{background:#313239}.save[aria-pressed=true]{border-color:#477c65;color:#c9f3df}.actions button:first-child{flex:1}
+.empty{border:1px dashed #55565d;border-radius:12px;padding:35px;text-align:center;color:var(--muted);line-height:1.6}.hidden{display:none!important}
+.compare-bar{position:fixed;z-index:7;bottom:16px;left:50%;transform:translateX(-50%);width:min(700px,calc(100% - 28px));background:#202126;border:1px solid #4a4b53;box-shadow:0 18px 55px #0009;border-radius:12px;padding:12px 14px;display:flex;align-items:center;gap:12px}.compare-bar span{font-size:.84rem;flex:1}.compare-bar small{display:block;color:var(--muted);font-size:.7rem;margin-top:2px}.compare-bar button{white-space:nowrap}
+.view{animation:appear .18s ease}@keyframes appear{from{opacity:.5;transform:translateY(4px)}to{opacity:1;transform:none}}
+.back{border:0;background:none;color:var(--muted);padding:0;margin-bottom:20px}.detail-layout{display:grid;grid-template-columns:1.1fr .9fr;gap:25px}.hero-art{min-height:410px;border-radius:15px;padding:28px;position:relative;display:flex;flex-direction:column;justify-content:end;overflow:hidden;isolation:isolate}.hero-art:before{content:"";position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,.88),rgba(0,0,0,.05) 85%);z-index:-1}.hero-art:after{content:"";position:absolute;width:370px;height:370px;right:-80px;top:-70px;border-radius:50%;background:rgba(255,255,255,.18);z-index:-2}.hero-art h1{font-family:Georgia,serif;font-size:clamp(2.6rem,5vw,4.5rem);max-width:620px;margin:0 0 12px}.hero-art p{color:#eee;max-width:530px;line-height:1.55}.detail-panel{padding:22px;background:var(--surface);border:1px solid var(--line);border-radius:14px}.detail-panel h2{margin:0 0 12px}.detail-panel p{color:var(--muted);line-height:1.6}.detail-signals{display:grid;gap:10px;margin:22px 0}.signal{border-bottom:1px solid var(--line);padding:10px 0;display:flex;justify-content:space-between;gap:12px;font-size:.83rem}.signal span:first-child{color:var(--muted)}.signal strong{text-align:right}.notice{color:var(--muted);font-size:.75rem;line-height:1.5;margin-top:16px}
+.compare-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}.compare-table th,.compare-table td{text-align:left;padding:14px;border-bottom:1px solid var(--line);font-size:.82rem}.compare-table th{color:#fff;background:#202126}.compare-table td:first-child{color:var(--muted);width:20%}
+.player{min-height:60vh;border-radius:16px;background:radial-gradient(ellipse at 70% 30%,#3e2833,#0b0b0d 62%);display:grid;place-items:center;text-align:center;padding:30px}.player-box{max-width:560px}.play-icon{margin:auto auto 18px;width:68px;height:68px;border-radius:50%;display:grid;place-items:center;background:#fff;color:#111;font-size:1.5rem;padding-left:4px}.player h1{font-size:2.4rem}.player p{color:var(--muted);line-height:1.6}.empty-collection{padding:34px;border:1px dashed #4c4d54;border-radius:12px;color:var(--muted);line-height:1.6}
+footer{border-top:1px solid var(--line);margin-top:54px;padding:20px 0 0;color:var(--muted);font-size:.73rem;line-height:1.6}
+.toast{position:fixed;z-index:10;bottom:90px;left:50%;transform:translateX(-50%);border:1px solid #477c65;background:#17231d;color:#d6f4e5;padding:11px 15px;border-radius:8px;box-shadow:0 10px 35px #0008;font-size:.83rem}
+@media(max-width:800px){.intro{grid-template-columns:1fr}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.detail-layout{grid-template-columns:1fr}.hero-art{min-height:330px}.topbar{gap:12px;flex-wrap:wrap}.topbar nav{order:3;width:100%;overflow:auto}.profile{margin-left:auto}}
+@media(max-width:540px){main{width:min(100% - 26px,1180px);padding-top:25px}.grid{grid-template-columns:1fr}.art{height:230px}.filters{gap:16px}.filter-group{width:100%}.reset{margin-left:0}.section-head{align-items:start;flex-direction:column}.compare-bar{align-items:flex-start}.compare-bar span{font-size:.75rem}.compare-bar button{padding:8px;font-size:.72rem}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand" aria-label="Netflix concept">N<small>DISCOVERY CONCEPT</small></div>
+  <nav aria-label="Primary navigation">
+    <button type="button" data-view="discover" aria-current="true">Discover</button>
+    <button type="button" data-view="compare" aria-current="false">Compare</button>
+    <button type="button" data-view="mylist" aria-current="false">My List <span id="saved-count"></span></button>
+  </nav>
+  <div class="profile" aria-label="Concept profile">Meera <span aria-hidden="true">⌄</span></div>
+</header>
+<main id="app" tabindex="-1"></main>
+<div id="compare-dock" class="compare-bar hidden" aria-live="polite"></div>
+<div id="live-region" class="toast hidden" role="status" aria-live="polite"></div>
+<script>
+(function(){
+"use strict";
+var titles=[
+{id:"monsoon",title:"Monsoon Letters",type:"Short film",runtime:26,genres:["Comedy","Romance"],mood:"Light",audio:["Hindi","English"],subs:["English","Hindi"],fit:"A gentle, funny story with an easy pace.",colors:["#6c3b55","#e5a45c"],description:"On a rain-soaked evening, two neighbors trade small favors and discover a new way to feel at home.",year:"2026",rating:"13+",match:["time","language","mood"]},
+{id:"bluehour",title:"Blue Hour",type:"Limited series",runtime:42,genres:["Drama","Mystery"],mood:"Thoughtful",audio:["Hindi","Tamil"],subs:["English","Hindi"],fit:"A quiet story to settle into.",colors:["#1a5265","#57a2ae"],description:"A night-shift radio host follows a small mystery through the voices of a changing city.",year:"2025",rating:"13+",match:["language"]},
+{id:"smallwins",title:"Small Wins",type:"Short film",runtime:24,genres:["Comedy","Family"],mood:"Light",audio:["Hindi","English","Tamil"],subs:["English"],fit:"A warm, low-stakes pick under half an hour.",colors:["#354c37","#d2a752"],description:"A community garden project turns a group of strangers into an unexpectedly good team.",year:"2026",rating:"7+",match:["time","language","mood"]},
+{id:"lasttrain",title:"The Last Train Home",type:"Film",runtime:58,genres:["Thriller","Drama"],mood:"Tense",audio:["English","Hindi"],subs:["English","Hindi"],fit:"For an evening when a gripping pace sounds right.",colors:["#343d57","#bb6c68"],description:"Two travelers miss their stop and find that each passenger on the platform has a different story.",year:"2025",rating:"16+",match:["language"]},
+{id:"paperstars",title:"Paper Stars",type:"Limited series",runtime:31,genres:["Romance","Drama"],mood:"Thoughtful",audio:["Hindi","English"],subs:["English","Hindi"],fit:"A reflective story with a 31-minute first episode.",colors:["#70506c","#c68a9a"],description:"An illustrator returns to a small coastal town to finish a project she once left behind.",year:"2026",rating:"13+",match:[]}
+];
+var state={time:"Any time",language:"Any language",mood:"Any mood",view:"discover",detail:null,playing:null,returnView:"discover",compare:[],saved:loadSaved()};
+function loadSaved(){try{return JSON.parse(localStorage.getItem("pucho-netflix-concept-saved")||"[]")}catch(e){return []}}
+function persist(){try{localStorage.setItem("pucho-netflix-concept-saved",JSON.stringify(state.saved))}catch(e){}}
+function byId(id){return titles.find(function(x){return x.id===id})}
+function esc(s){return String(s).replace(/[&<>"']/g,function(c){return {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]})}
+function selected(t){
+ if(state.time==="Under 30 min"&&t.runtime>30)return false;
+ if(state.time==="Under 60 min"&&t.runtime>60)return false;
+ if(state.language!=="Any language"&&t.audio.indexOf(state.language)<0)return false;
+ if(state.mood!=="Any mood"&&t.mood!==state.mood)return false;
+ return true
+}
+function filtered(){return titles.filter(selected)}
+function artStyle(t){return "background:linear-gradient(140deg,"+t.colors[0]+","+t.colors[1]+");"}
+function card(t){
+ var saved=state.saved.indexOf(t.id)>=0,checked=state.compare.indexOf(t.id)>=0;
+ return '<article class="title-card"><div class="art" style="'+artStyle(t)+'"><div><h3>'+esc(t.title)+'</h3><span>'+esc(t.type)+' / '+t.runtime+' min</span></div></div><div class="card-content"><div class="meta"><span class="pill">'+esc(t.mood)+'</span><span class="pill">'+esc(t.genres[0])+'</span><span class="pill">'+t.rating+'</span></div><p class="why">'+esc(why(t))+'</p><div class="availability">Audio: '+esc(t.audio.join(", "))+'<br>Subtitles: '+esc(t.subs.join(", "))+'</div><div class="actions"><button class="primary" data-action="detail" data-id="'+t.id+'">View details</button><button class="save" data-action="save" data-id="'+t.id+'" aria-pressed="'+saved+'">'+(saved?"Saved":"Save")+'</button></div><div class="actions"><button class="secondary" data-action="compare" data-id="'+t.id+'" aria-pressed="'+checked+'">'+(checked?"Remove from compare":"Compare")+'</button></div></div></article>'
+}
+function why(t){
+ var reasons=[];
+ if(state.time!=="Any time"&&t.runtime<=30)reasons.push("under 30 min");
+ else if(state.time==="Under 60 min"&&t.runtime<=60)reasons.push("under 60 min");
+ if(state.language!=="Any language"&&t.audio.indexOf(state.language)>=0)reasons.push(state.language+" audio");
+ if(state.mood!=="Any mood"&&t.mood===state.mood)reasons.push(t.mood.toLowerCase()+" mood");
+ return reasons.length?"Fits your choice: "+reasons.join(" + "):t.fit
+}
+function viewTitle(title,description){return '<div class="eyebrow">A small set of useful signals</div><div class="intro"><div><h1>'+title+'</h1><p>'+description+'</p></div><aside class="concept-note"><strong>Concept prototype</strong>All titles, artwork, runtimes, and availability on this page are fictional examples. This is not a Netflix product or catalog.</aside></div>'}
+function discovery(){
+ var list=filtered();
+ var time=["Any time","Under 30 min","Under 60 min"],lang=["Any language","Hindi","English","Tamil"],moods=["Any mood","Light","Thoughtful","Tense"];
+ function group(label,items,key){return '<div class="filter-group"><label>'+label+'</label><div class="segmented">'+items.map(function(v){return '<button type="button" class="filter-button" data-filter="'+key+'" data-value="'+esc(v)+'" aria-pressed="'+(state[key]===v)+'">'+esc(v)+'</button>'}).join("")+'</div></div>'}
+ return '<section class="view">'+viewTitle('What fits tonight?','A few details can make the next choice easier. Set any filters that matter, then change them whenever you want.')+'<div class="filters">'+group("Time",time,"time")+group("Audio language",lang,"language")+group("Mood",moods,"mood")+'<button class="reset" type="button" data-action="reset">Clear filters</button></div><div class="section-head"><div><h2>Picked for this moment</h2><p>Short list, clear fit. Nothing is locked in.</p></div><span class="count">'+list.length+' concept titles</span></div><div class="grid">'+list.map(card).join("")+'</div>'+(list.length?"":'<div class="empty">No concept titles match all of those choices.<br>Try clearing one filter to widen the list.<br><button class="secondary" data-action="reset" style="margin-top:14px">Clear filters</button></div>')+'</section>'
+}
+function myList(){
+ var list=state.saved.map(byId).filter(Boolean);
+ return '<section class="view">'+viewTitle('Your saved list','A small shelf for titles you may want to return to. Your saves stay in this browser.')+'<div class="section-head"><div><h2>My List</h2><p>'+list.length+' saved concept '+(list.length===1?"title":"titles")+'</p></div></div>'+(list.length?'<div class="grid">'+list.map(card).join("")+'</div>':'<div class="empty-collection">Nothing saved yet. Browse a title and choose Save to keep it here.</div>')+'</section>'
+}
+function compare(){
+ var list=state.compare.map(byId).filter(Boolean);
+ if(!list.length)return '<section class="view">'+viewTitle('Compare a few','Select up to three concept titles and look at the signals side by side.')+'<div class="empty">Your compare tray is empty.<br>Go to Discover and choose Compare on up to three titles.<br><button class="secondary" data-action="nav" data-view="discover" style="margin-top:14px">Browse titles</button></div></section>';
+ var head='<tr><th scope="col">Signal</th>'+list.map(function(x){return '<th scope="col">'+esc(x.title)+'</th>'}).join("")+'</tr>';
+ var rows=[["Runtime",function(x){return x.runtime+" min"}],["Mood",function(x){return x.mood}],["Genre",function(x){return x.genres.join(", ")}],["Audio",function(x){return x.audio.join(", ")}],["Subtitles",function(x){return x.subs.join(", ")}],["Why it may fit",function(x){return why(x)}]];
+ return '<section class="view">'+viewTitle('Compare a few','Look for the differences that matter to you. There is no automatic winner.')+'<div style="overflow-x:auto"><table class="compare-table"><thead>'+head+'</thead><tbody>'+rows.map(function(r){return '<tr><td>'+r[0]+'</td>'+list.map(function(x){return '<td>'+esc(r[1](x))+'</td>'}).join("")+'</tr>'}).join("")+'</tbody></table></div><div class="actions" style="margin-top:18px"><button class="secondary" data-action="nav" data-view="discover">Back to discovery</button>'+list.map(function(x){return '<button class="secondary" data-action="remove-compare" data-id="'+x.id+'">Remove '+esc(x.title)+'</button>'}).join("")+'</div></section>'
+}
+function detail(t){
+ return '<section class="view"><button class="back" data-action="back">&larr; Back to your choices</button><div class="detail-layout"><div class="hero-art" style="'+artStyle(t)+'"><div class="eyebrow">'+esc(t.type)+' / concept example</div><h1>'+esc(t.title)+'</h1><p>'+esc(t.description)+'</p></div><div class="detail-panel"><h2>Would this fit tonight?</h2><p>'+esc(why(t))+'</p><div class="meta"><span class="pill">'+t.year+'</span><span class="pill">'+t.runtime+' min</span><span class="pill">'+esc(t.genres.join(" / "))+'</span><span class="pill">'+t.rating+'</span></div><div class="detail-signals"><div class="signal"><span>Audio</span><strong>'+esc(t.audio.join(", "))+'</strong></div><div class="signal"><span>Subtitles</span><strong>'+esc(t.subs.join(", "))+'</strong></div><div class="signal"><span>Mood</span><strong>'+esc(t.mood)+'</strong></div></div><div class="actions"><button class="primary" data-action="play" data-id="'+t.id+'">Play concept preview</button><button class="save" data-action="save" data-id="'+t.id+'" aria-pressed="'+(state.saved.indexOf(t.id)>=0)+'">'+(state.saved.indexOf(t.id)>=0?"Saved":"Save")+'</button></div><p class="notice">Language availability is fictional for this concept. Real title options vary by title, device, profile, and region.</p></div></div></section>'
+}
+function player(t){
+ return '<section class="view"><button class="back" data-action="back">&larr; Back to title</button><div class="player"><div class="player-box"><div class="play-icon" aria-hidden="true">&#9654;</div><div class="eyebrow">Concept playback handoff</div><h1>'+esc(t.title)+'</h1><p>This preview stands in for the transition to playback. No video is streamed in this prototype.</p><button class="secondary" data-action="back">Return to title details</button></div></div></section>'
+}
+function render(){
+ var app=document.getElementById("app");
+ if(state.view==="mylist")app.innerHTML=myList();
+ else if(state.view==="compare")app.innerHTML=compare();
+ else if(state.view==="detail"&&state.detail)app.innerHTML=detail(byId(state.detail));
+ else if(state.view==="player"&&state.playing)app.innerHTML=player(byId(state.playing));
+ else{state.view="discover";app.innerHTML=discovery()}
+ document.querySelectorAll("nav [data-view]").forEach(function(b){b.setAttribute("aria-current",b.dataset.view===state.view|| (state.view==="detail"&&b.dataset.view==="discover")|| (state.view==="player"&&b.dataset.view==="discover")?"true":"false")});
+ document.getElementById("saved-count").textContent=state.saved.length?"("+state.saved.length+")":"";
+ renderDock()
+}
+function renderDock(){
+ var dock=document.getElementById("compare-dock");
+ if(state.compare.length===0){dock.classList.add("hidden");dock.innerHTML="";return}
+ dock.classList.remove("hidden");
+ dock.innerHTML='<span><strong>'+state.compare.length+' of 3 selected</strong><small>'+state.compare.map(function(id){return esc(byId(id).title)}).join(" / ")+'</small></span><button class="secondary" data-action="clear-compare">Clear</button><button class="primary" data-action="nav" data-view="compare">Compare now</button>'
+}
+function toast(message){
+ var el=document.getElementById("live-region");el.textContent=message;el.classList.remove("hidden");clearTimeout(toast.timer);toast.timer=setTimeout(function(){el.classList.add("hidden")},2200)
+}
+document.addEventListener("click",function(e){
+ var nav=e.target.closest("[data-view]");
+ if(nav&&nav.closest("nav")){state.view=nav.dataset.view;state.detail=null;state.playing=null;render();window.scrollTo(0,0);return}
+ var f=e.target.closest("[data-filter]");
+ if(f){state[f.dataset.filter]=f.dataset.value;render();return}
+ var b=e.target.closest("[data-action]");if(!b)return;
+ var a=b.dataset.action,id=b.dataset.id,t=byId(id);
+ if(a==="reset"){state.time="Any time";state.language="Any language";state.mood="Any mood";state.view="discover";render()}
+ if(a==="detail"){state.returnView=state.view;state.detail=id;state.view="detail";render();window.scrollTo(0,0)}
+ if(a==="back"){if(state.view==="player"){state.view="detail";state.detail=state.playing;state.playing=null}else{state.view=state.returnView||"discover";state.detail=null;state.playing=null}render();window.scrollTo(0,0)}
+ if(a==="save"){var at=state.saved.indexOf(id);if(at<0){state.saved.push(id);toast(t.title+" saved to My List.")}else{state.saved.splice(at,1);toast(t.title+" removed from My List.")}persist();render()}
+ if(a==="compare"){var ix=state.compare.indexOf(id);if(ix>=0)state.compare.splice(ix,1);else if(state.compare.length<3)state.compare.push(id);else{toast("Compare up to three titles.");return}render()}
+ if(a==="remove-compare"){state.compare=state.compare.filter(function(x){return x!==id});render()}
+ if(a==="clear-compare"){state.compare=[];render()}
+ if(a==="nav"){state.view=b.dataset.view;state.detail=null;render();window.scrollTo(0,0)}
+ if(a==="play"){state.playing=id;state.view="player";render();window.scrollTo(0,0)}
+});
+render();
+})();
+</script>
+</body>
+</html>
+
